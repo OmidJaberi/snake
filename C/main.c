@@ -104,6 +104,10 @@ void update()
         snake_size++;
         new_mouse = true;
     }
+    else if (map[new_head.y][new_head.x] > 0)
+    {
+        running = false;
+    }
 
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
