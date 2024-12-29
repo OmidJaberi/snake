@@ -25,7 +25,7 @@ int getch(void)
 #define WIDTH 15
 #define HEIGHT 10
 
-bool running = true, play = false;
+bool running = true, play = false, game = false;
 
 int map[HEIGHT][WIDTH];
 int snake_size;
@@ -86,6 +86,21 @@ void spawn_mouse()
     map[rand_cell->y][rand_cell->x] = -1;
 }
 
+void reset(bool start)
+{
+    game = true;
+    play = start;
+    dir.x = 1;
+    dir.y = 0;
+    for (int i = 0; i < HEIGHT; i++)
+        for (int j = 0; j < WIDTH; j++)
+            map[i][j] = 0;
+    map[HEIGHT / 2][WIDTH / 2] = 1;
+    snake_size = 2;
+    spawn_mouse();
+    draw();
+}
+
 void update()
 {
     struct point new_head;
@@ -104,6 +119,11 @@ void update()
         snake_size++;
         new_mouse = true;
     }
+    else if (map[new_head.y][new_head.x] > 0 && map[new_head.y][new_head.x] < snake_size)
+    {
+        game = false;
+        return;
+    }
 
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
@@ -114,10 +134,6 @@ void update()
                 map[i][j] = 0;
         }
     
-    if (map[new_head.y][new_head.x] > 0)
-    {
-        running = false;
-    }
     map[new_head.y][new_head.x] = 1;
     prev_dir.x = dir.x;
     if (new_mouse) spawn_mouse();
@@ -138,8 +154,11 @@ void* keypress_thread(void* arg)
         if (ch == 'q')
             running = false;
         else if (ch == ' ')
-            play = !play;
-        else if (!play)
+            if (game)
+                play = !play;
+            else
+                reset(true);
+        else if (!game || !play)
             continue;
         if (ch == up && prev_dir.x != 0)
         {
@@ -173,19 +192,14 @@ int main()
         fprintf(stderr, "Error creating keypress thread\n");
         return 1;
     }
-    dir.x = 1;
-    dir.y = 0;
-    map[5][5] = 1;
-    map[4][5] = 2;
-    map[4][4] = 3;
-    map[5][4] = 4;
-    map[1][1] = -1;
-    snake_size = 4;
+    reset(false);
     while (running)
     {
-        if (!play) continue;
-        update();
-        draw();
+        if (game && play)
+        {
+            update();
+            draw();
+        }
         usleep(200 * 1000);
     }
     pthread_join(thread_id, NULL);
