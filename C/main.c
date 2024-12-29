@@ -33,7 +33,7 @@ struct point
 {
     int x;
     int y;
-} dir;
+} dir, prev_dir;
 
 void clear()
 {
@@ -118,6 +118,7 @@ void update()
                 map[i][j] = 0;
         }
     map[new_head.y][new_head.x] = 1;
+    prev_dir.x = dir.x;
     if (new_mouse) spawn_mouse();
 }
 
@@ -135,22 +136,22 @@ void* keypress_thread(void* arg)
         }
         if (ch == 'q')
             running = false;
-        else if (ch == up)
+        else if (ch == up && prev_dir.x != 0)
         {
             dir.x = 0;
             dir.y = -1;
         }
-        else if (ch == down)
+        else if (ch == down && prev_dir.x != 0)
         {
             dir.x = 0;
             dir.y = 1;
         }
-        else if (ch == right)
+        else if (ch == right && prev_dir.x == 0)
         {
             dir.x = 1;
             dir.y = 0;
         }
-        else if (ch == left)
+        else if (ch == left && prev_dir.x == 0)
         {
             dir.x = -1;
             dir.y = 0;
