@@ -92,25 +92,32 @@ void* keypress_thread(void* arg)
 {
     while (running)
     {
+        char up = 'w', down = 's', right = 'd', left = 'a';
         char ch = getch();
+        if (ch == '\033')
+        {
+            getch();
+            ch = getch();
+            up = 'A', down = 'B', right = 'C', left = 'D';
+        }
         if (ch == 'q')
             running = false;
-        else if (ch == 'w')
+        else if (ch == up)
         {
             dir.x = 0;
             dir.y = -1;
         }
-        else if (ch == 's')
+        else if (ch == down)
         {
             dir.x = 0;
             dir.y = 1;
         }
-        else if (ch == 'd')
+        else if (ch == right)
         {
             dir.x = 1;
             dir.y = 0;
         }
-        else if (ch == 'a')
+        else if (ch == left)
         {
             dir.x = -1;
             dir.y = 0;
