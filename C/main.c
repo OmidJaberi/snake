@@ -24,6 +24,15 @@ int getch(void)
 
 bool running = true;
 
+void clear()
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    printf("\e[1;1H\e[2J");
+#endif
+}
+
 void* keypress_thread(void* arg)
 {
     while (running)
@@ -33,15 +42,6 @@ void* keypress_thread(void* arg)
             running = false;
     }
     return NULL;
-}
-
-void clear()
-{
-#ifdef _WIN32
-    system("cls");
-#else
-    printf("\e[1;1H\e[2J");
-#endif
 }
 
 int main()
