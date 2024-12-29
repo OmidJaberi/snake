@@ -54,7 +54,12 @@ void draw()
     {
         printf("║");
         for (int j = 0; j < WIDTH; j++)
-            printf("%c ", (map[i][j] > 0 ? 'o' : ' '));
+            if (map[i][j] > 0)
+                printf("o ");
+            else if (map[i][j] < 0)
+                printf("# ");
+            else
+                printf("  ");
         printf("║\n");
     }
     printf("╚");
@@ -63,11 +68,30 @@ void draw()
     printf("╝\n");
 }
 
+void spawn_mouse()
+{
+    struct {
+        int x, y;
+    } empty_cell[WIDTH * HEIGHT];
+    int n = 0;
+    for (int i = 0; i < HEIGHT; i++)
+        for (int j = 0; j < WIDTH; j++)
+            if (map[i][j] == 0)
+            {
+                empty_cell[n].x = j;
+                empty_cell[n].y = i;
+                n++;
+            }
+    int rand_cell = rand() % n;
+    map[empty_cell[rand_cell].y][empty_cell[rand_cell].x] = -1;
+}
+
 void update()
 {
     struct {
         int x, y;
     } new_head;
+    bool new_mouse = false;
     
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
@@ -76,7 +100,13 @@ void update()
                 new_head.x = (WIDTH + j + dir.x) % WIDTH;
                 new_head.y = (HEIGHT + i + dir.y) % HEIGHT;
             }
-    
+
+    if (map[new_head.y][new_head.x] == -1)
+    {
+        snake_size++;
+        new_mouse = true;
+    }
+
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
         {
@@ -86,6 +116,7 @@ void update()
                 map[i][j] = 0;
         }
     map[new_head.y][new_head.x] = 1;
+    if (new_mouse) spawn_mouse();
 }
 
 void* keypress_thread(void* arg)
@@ -140,6 +171,7 @@ int main()
     map[4][5] = 2;
     map[4][4] = 3;
     map[5][4] = 4;
+    map[1][1] = -1;
     snake_size = 4;
     while (running)
     {
