@@ -95,6 +95,26 @@ void* keypress_thread(void* arg)
         char ch = getch();
         if (ch == 'q')
             running = false;
+        else if (ch == 'w')
+        {
+            dir.x = 0;
+            dir.y = -1;
+        }
+        else if (ch == 's')
+        {
+            dir.x = 0;
+            dir.y = 1;
+        }
+        else if (ch == 'd')
+        {
+            dir.x = 1;
+            dir.y = 0;
+        }
+        else if (ch == 'a')
+        {
+            dir.x = -1;
+            dir.y = 0;
+        }
     }
     return NULL;
 }
@@ -118,7 +138,7 @@ int main()
     {
         update();
         draw();
-        usleep(1000 * 1000);
+        usleep(200 * 1000);
     }
     pthread_join(thread_id, NULL);
     printf("Program exited gracefully.\n");
