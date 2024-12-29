@@ -28,6 +28,11 @@ int getch(void)
 bool running = true;
 
 int map[HEIGHT][WIDTH];
+int snake_size;
+struct {
+    int x;
+    int y;
+} dir;
 
 void clear()
 {
@@ -58,6 +63,31 @@ void draw()
     printf("╝\n");
 }
 
+void update()
+{
+    struct {
+        int x, y;
+    } new_head;
+    
+    for (int i = 0; i < HEIGHT; i++)
+        for (int j = 0; j < WIDTH; j++)
+            if (map[i][j] == 1)
+            {
+                new_head.x = (WIDTH + j + dir.x) % WIDTH;
+                new_head.y = (HEIGHT + i + dir.y) % HEIGHT;
+            }
+    
+    for (int i = 0; i < HEIGHT; i++)
+        for (int j = 0; j < WIDTH; j++)
+        {
+            if (map[i][j] > 0)
+                map[i][j]++;
+            if (map[i][j] > snake_size)
+                map[i][j] = 0;
+        }
+    map[new_head.y][new_head.x] = 1;
+}
+
 void* keypress_thread(void* arg)
 {
     while (running)
@@ -77,9 +107,16 @@ int main()
         fprintf(stderr, "Error creating keypress thread\n");
         return 1;
     }
+    dir.x = 1;
+    dir.y = 0;
     map[5][5] = 1;
+    map[4][5] = 2;
+    map[4][4] = 3;
+    map[5][4] = 4;
+    snake_size = 4;
     while (running)
     {
+        update();
         draw();
         usleep(1000 * 1000);
     }
