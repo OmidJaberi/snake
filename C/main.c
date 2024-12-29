@@ -190,10 +190,19 @@ void* keypress_thread(void* arg)
         if (ch == 'q')
             running = false;
         else if (ch == ' ')
+        {
             if (game)
+            {
+                if (play)
+                {
+                    message = "The game is paused. Press SPACE to continue.";
+                    draw();
+                }
                 play = !play;
+            }
             else
                 reset(true);
+        }
         else if (!game || !play)
             continue;
         if (ch == up && prev_dir.x != 0)
