@@ -22,7 +22,12 @@ int getch(void)
 }
 #endif
 
+#define WIDTH 15
+#define HEIGHT 10
+
 bool running = true;
+
+int map[HEIGHT][WIDTH];
 
 void clear()
 {
@@ -31,6 +36,17 @@ void clear()
 #else
     printf("\e[1;1H\e[2J");
 #endif
+}
+
+void draw()
+{
+    clear();
+    for (int i = 0; i < HEIGHT; i++)
+    {
+        for (int j = 0; j < WIDTH; j++)
+            printf("%c ", (map[i][j] > 0 ? 'o' : ' '));
+        printf("\n");
+    }
 }
 
 void* keypress_thread(void* arg)
@@ -52,11 +68,10 @@ int main()
         fprintf(stderr, "Error creating keypress thread\n");
         return 1;
     }
-    int i = 0;
+    map[5][5] = 1;
     while (running)
     {
-        clear();
-        printf("%d\n", ++i);
+        draw();
         usleep(1000 * 1000);
     }
     pthread_join(thread_id, NULL);
