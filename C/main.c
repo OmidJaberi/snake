@@ -25,7 +25,7 @@ int getch(void)
 #define WIDTH 15
 #define HEIGHT 10
 
-bool running = true;
+bool running = true, play = false;
 
 int map[HEIGHT][WIDTH];
 int snake_size;
@@ -137,7 +137,11 @@ void* keypress_thread(void* arg)
         }
         if (ch == 'q')
             running = false;
-        else if (ch == up && prev_dir.x != 0)
+        else if (ch == ' ')
+            play = !play;
+        else if (!play)
+            continue;
+        if (ch == up && prev_dir.x != 0)
         {
             dir.x = 0;
             dir.y = -1;
@@ -179,6 +183,7 @@ int main()
     snake_size = 4;
     while (running)
     {
+        if (!play) continue;
         update();
         draw();
         usleep(200 * 1000);
