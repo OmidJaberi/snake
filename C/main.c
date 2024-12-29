@@ -26,8 +26,10 @@ int getch(void)
 #define WIDTH 15
 #define HEIGHT 10
 #define DELAY_MS 150
-#define SNAKE "o "
-#define MOUSE "@ "
+#define SNAKE "🔵"
+#define MOUSE "🍎"
+#define COLOR_DEFAULT "\033[0m"
+#define COLOR_MAP "\033[42m\033[37m"
 
 bool running = true, play = false, game = false;
 char *message;
@@ -49,10 +51,29 @@ void clear()
 #endif
 }
 
+void set_color()
+{
+#ifdef _WIN32
+    return;
+#else
+    printf(COLOR_MAP);
+#endif
+}
+
+void reset_color()
+{
+#ifdef _WIN32
+    return;
+#else
+    printf(COLOR_DEFAULT);
+#endif
+}
+
 void draw()
 {
     clear();
     printf("Score: %d\n", (snake_size - 2) * 50);
+    set_color();
     printf("╔");
     for (int i = 0; i < 2 * WIDTH; i++)
         printf("═");
@@ -73,6 +94,7 @@ void draw()
     for (int i = 0; i < 2 * WIDTH; i++)
         printf("═");
     printf("╝\n");
+    reset_color();
     if (message != NULL && strcmp(message, "") != 0)
     {
         printf("\n%s\n", message);
