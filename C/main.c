@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <pthread.h>
 #ifdef _WIN32
@@ -34,6 +35,15 @@ void* keypress_thread(void* arg)
     return NULL;
 }
 
+void clear()
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    printf("\e[1;1H\e[2J");
+#endif
+}
+
 int main()
 {
     pthread_t thread_id;
@@ -45,6 +55,7 @@ int main()
     int i = 0;
     while (running)
     {
+        clear();
         printf("%d\n", ++i);
         usleep(1000 * 1000);
     }
