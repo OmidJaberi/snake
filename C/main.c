@@ -201,7 +201,9 @@ void* keypress_thread(void* arg)
                 play = !play;
             }
             else
+            {
                 reset(true);
+            }
         }
         else if (!game || !play)
             continue;
