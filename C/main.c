@@ -49,6 +49,7 @@ void clear()
 void draw()
 {
     clear();
+    printf("Score: %d\n", (snake_size - 2) * 50);
     printf("╔");
     for (int i = 0; i < 2 * WIDTH; i++)
         printf("═");
