@@ -29,7 +29,8 @@ bool running = true;
 
 int map[HEIGHT][WIDTH];
 int snake_size;
-struct {
+struct point
+{
     int x;
     int y;
 } dir;
@@ -70,9 +71,7 @@ void draw()
 
 void spawn_mouse()
 {
-    struct {
-        int x, y;
-    } empty_cell[WIDTH * HEIGHT];
+    struct point empty_cell[WIDTH * HEIGHT];
     int n = 0;
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
@@ -82,15 +81,14 @@ void spawn_mouse()
                 empty_cell[n].y = i;
                 n++;
             }
-    int rand_cell = rand() % n;
-    map[empty_cell[rand_cell].y][empty_cell[rand_cell].x] = -1;
+    int random = rand() % n;
+    struct point* rand_cell = empty_cell + random;
+    map[rand_cell->y][rand_cell->x] = -1;
 }
 
 void update()
 {
-    struct {
-        int x, y;
-    } new_head;
+    struct point new_head;
     bool new_mouse = false;
     
     for (int i = 0; i < HEIGHT; i++)
