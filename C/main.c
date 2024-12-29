@@ -41,12 +41,21 @@ void clear()
 void draw()
 {
     clear();
+    printf("╔");
+    for (int i = 0; i < 2 * WIDTH; i++)
+        printf("═");
+    printf("╗\n");
     for (int i = 0; i < HEIGHT; i++)
     {
+        printf("║");
         for (int j = 0; j < WIDTH; j++)
             printf("%c ", (map[i][j] > 0 ? 'o' : ' '));
-        printf("\n");
+        printf("║\n");
     }
+    printf("╚");
+    for (int i = 0; i < 2 * WIDTH; i++)
+        printf("═");
+    printf("╝\n");
 }
 
 void* keypress_thread(void* arg)
