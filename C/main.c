@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <string.h>
 #ifdef _WIN32
 #include <conio.h>  // For Windows
 #else
@@ -26,6 +27,7 @@ int getch(void)
 #define HEIGHT 10
 
 bool running = true, play = false, game = false;
+char *message;
 
 int map[HEIGHT][WIDTH];
 int snake_size;
@@ -67,6 +69,11 @@ void draw()
     for (int i = 0; i < 2 * WIDTH; i++)
         printf("═");
     printf("╝\n");
+    if (message != NULL && strcmp(message, "") != 0)
+    {
+        printf("\n%s\n", message);
+        message = "";
+    }
 }
 
 void spawn_mouse()
@@ -98,6 +105,8 @@ void reset(bool start)
     map[HEIGHT / 2][WIDTH / 2] = 1;
     snake_size = 2;
     spawn_mouse();
+    if (!start)
+        message = "Press SPACE to start the game.\nPress Q to quit.";
     draw();
 }
 
@@ -122,6 +131,7 @@ void update()
     else if (map[new_head.y][new_head.x] > 0 && map[new_head.y][new_head.x] < snake_size)
     {
         game = false;
+        message = "Game over! Press SPACE to play again.";
         return;
     }
 
@@ -203,6 +213,5 @@ int main()
         usleep(200 * 1000);
     }
     pthread_join(thread_id, NULL);
-    printf("Program exited gracefully.\n");
     return 0;
 }
