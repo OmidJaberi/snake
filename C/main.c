@@ -104,10 +104,6 @@ void update()
         snake_size++;
         new_mouse = true;
     }
-    else if (map[new_head.y][new_head.x] > 0)
-    {
-        running = false;
-    }
 
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
@@ -117,6 +113,11 @@ void update()
             if (map[i][j] > snake_size)
                 map[i][j] = 0;
         }
+    
+    if (map[new_head.y][new_head.x] > 0)
+    {
+        running = false;
+    }
     map[new_head.y][new_head.x] = 1;
     prev_dir.x = dir.x;
     if (new_mouse) spawn_mouse();
