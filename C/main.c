@@ -25,6 +25,9 @@ int getch(void)
 
 #define WIDTH 15
 #define HEIGHT 10
+#define DELAY_MS 150
+#define SNAKE "o "
+#define MOUSE "@ "
 
 bool running = true, play = false, game = false;
 char *message;
@@ -59,9 +62,9 @@ void draw()
         printf("║");
         for (int j = 0; j < WIDTH; j++)
             if (map[i][j] > 0)
-                printf("o ");
+                printf(SNAKE);
             else if (map[i][j] < 0)
-                printf("# ");
+                printf(MOUSE);
             else
                 printf("  ");
         printf("║\n");
@@ -211,7 +214,7 @@ int main()
             update();
             draw();
         }
-        usleep(200 * 1000);
+        usleep(DELAY_MS * 1000);
     }
     pthread_join(thread_id, NULL);
     return 0;
