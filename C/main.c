@@ -3,33 +3,13 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <string.h>
-#ifdef _WIN32
-#include <conio.h>  // For Windows
-#else
-#include <termios.h>
-#include <unistd.h>
-
-int getch(void)
-{
-    struct termios oldt, newt;
-    int ch;
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    ch = getchar();
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    return ch;
-}
-#endif
+#include "platform.h"
 
 #define WIDTH 15
 #define HEIGHT 10
 #define DELAY_MS 150
 #define SNAKE "🔵"
 #define MOUSE "🍎"
-#define COLOR_DEFAULT "\033[0m"
-#define COLOR_MAP "\033[42m\033[37m"
 
 bool running = true, play = false, game = false;
 char *message;
@@ -41,33 +21,6 @@ struct point
     int x;
     int y;
 } dir, prev_dir;
-
-void clear()
-{
-#ifdef _WIN32
-    system("cls");
-#else
-    printf("\e[1;1H\e[2J");
-#endif
-}
-
-void set_color()
-{
-#ifdef _WIN32
-    return;
-#else
-    printf(COLOR_MAP);
-#endif
-}
-
-void reset_color()
-{
-#ifdef _WIN32
-    return;
-#else
-    printf(COLOR_DEFAULT);
-#endif
-}
 
 void draw()
 {
