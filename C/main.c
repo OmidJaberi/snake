@@ -101,6 +101,8 @@ void pause_game()
 
 void change_dir(int x, int y)
 {
+    if (!game || !play)
+        return;
     if (x * prev_dir.x != 0 || y * prev_dir.y != 0)
         return;
     dir.x = x;
@@ -152,7 +154,7 @@ void* keypress_thread(void* arg)
     {
         char up = 'w', down = 's', right = 'd', left = 'a';
         char ch = getch();
-        if (ch == '\033')
+        if (ch == '\033') // Arrow Key Press
         {
             getch();
             ch = getch();
@@ -167,8 +169,6 @@ void* keypress_thread(void* arg)
             else
                 reset(true);
         }
-        else if (!game || !play)
-            continue;
         if (ch == up)
             change_dir(0, -1);
         else if (ch == down)
