@@ -89,6 +89,14 @@ void reset(bool start)
     draw();
 }
 
+void change_dir(int x, int y)
+{
+    if (x * prev_dir.x != 0 || y * prev_dir.y != 0)
+        return;
+    dir.x = x;
+    dir.y = y;
+}
+
 void update()
 {
     struct point new_head;
@@ -160,26 +168,14 @@ void* keypress_thread(void* arg)
         }
         else if (!game || !play)
             continue;
-        if (ch == up && prev_dir.x != 0)
-        {
-            dir.x = 0;
-            dir.y = -1;
-        }
-        else if (ch == down && prev_dir.x != 0)
-        {
-            dir.x = 0;
-            dir.y = 1;
-        }
-        else if (ch == right && prev_dir.x == 0)
-        {
-            dir.x = 1;
-            dir.y = 0;
-        }
-        else if (ch == left && prev_dir.x == 0)
-        {
-            dir.x = -1;
-            dir.y = 0;
-        }
+        if (ch == up)
+            change_dir(0, -1);
+        else if (ch == down)
+            change_dir(0, 1);
+        else if (ch == right)
+            change_dir(1, 0);
+        else if (ch == left)
+            change_dir(-1, 0);
     }
     return NULL;
 }
