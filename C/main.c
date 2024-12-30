@@ -89,6 +89,16 @@ void reset(bool start)
     draw();
 }
 
+void pause_game()
+{
+    if (play)
+    {
+        message = "The game is paused. Press SPACE to continue.";
+        draw();
+    }
+    play = !play;
+}
+
 void change_dir(int x, int y)
 {
     if (x * prev_dir.x != 0 || y * prev_dir.y != 0)
@@ -153,18 +163,9 @@ void* keypress_thread(void* arg)
         else if (ch == ' ')
         {
             if (game)
-            {
-                if (play)
-                {
-                    message = "The game is paused. Press SPACE to continue.";
-                    draw();
-                }
-                play = !play;
-            }
+                pause_game();
             else
-            {
                 reset(true);
-            }
         }
         else if (!game || !play)
             continue;
