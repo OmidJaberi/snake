@@ -1,9 +1,12 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include "platform.h"
 #include "snake.h"
 
 #define DELAY_MS 150
+
+bool running = true;
 
 void* keypress_thread(void* arg)
 {

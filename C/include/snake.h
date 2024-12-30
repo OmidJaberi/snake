@@ -8,7 +8,7 @@
 #define SNAKE "🔵"
 #define MOUSE "🍎"
 
-extern bool running, play, game;
+extern bool play, game;
 char *message;
 
 int map[HEIGHT][WIDTH];

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool running = true, play = false, game = false;
+bool play = false, game = false;
 
 void draw()
 {
