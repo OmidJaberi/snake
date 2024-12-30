@@ -129,5 +129,6 @@ void update()
     
     map[new_head.y][new_head.x] = 1;
     prev_dir.x = dir.x;
+    prev_dir.y = dir.y;
     if (new_mouse) spawn_mouse();
 }
