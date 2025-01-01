@@ -7,14 +7,24 @@ class Snake {
     constructor(width, height) {
         this.#width = width;
         this.#height = height;
-        this.#snake = [[height / 2, width / 2]];
+        this.#snake = [[height / 2, width / 2], [height / 2, width / 2]];
         this.#dir = [0, 1];
         this.#food = null;
         this.spawnFood();
     }
-    update() {}
+    update() {
+        let newHead = [
+            (this.getHeight() + this.#dir[0] + this.#snake[0][0]) % this.getHeight(),
+            (this.getWidth() + this.#dir[1] + this.#snake[0][1]) % this.getWidth()
+        ];
+        this.#snake.unshift(newHead);
+        if (this.onFood(newHead))
+            this.spawnFood();
+        else
+            this.#snake.pop();
+    }
     changeDir(dir) {
-        this.dir = dir;
+        this.#dir = dir;
     }
     onSnake([x, y]) {
         let ans = false;
@@ -36,7 +46,7 @@ class Snake {
             }
         this.#food = free[Math.floor(Math.random() * free.length)];
     }
-    getScore() { return this.#snake.length; }
+    getScore() { return this.#snake.length - 2; }
     getWidth() { return this.#width; }
     getHeight() { return this.#height; }
 }
