@@ -6,7 +6,7 @@
 #define WIDTH 15
 #define HEIGHT 10
 #define SNAKE "🔵"
-#define MOUSE "🍎"
+#define FOOD "🍎"
 
 extern bool play, game;
 char *message;
@@ -21,7 +21,7 @@ struct point
 
 void draw();
 
-void spawn_mouse();
+void spawn_food();
 
 void reset(bool);
 

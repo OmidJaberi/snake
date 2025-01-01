@@ -22,7 +22,7 @@ void draw()
             if (map[i][j] > 0)
                 printf(SNAKE);
             else if (map[i][j] < 0)
-                printf(MOUSE);
+                printf(FOOD);
             else
                 printf("  ");
         printf("║\n");
@@ -39,7 +39,7 @@ void draw()
     }
 }
 
-void spawn_mouse()
+void spawn_food()
 {
     struct point empty_cell[WIDTH * HEIGHT];
     int n = 0;
@@ -67,7 +67,7 @@ void reset(bool start)
             map[i][j] = 0;
     map[HEIGHT / 2][WIDTH / 2] = 1;
     snake_size = 2;
-    spawn_mouse();
+    spawn_food();
     if (!start)
         message = "Press SPACE to start the game.\nPress Q to quit.";
     draw();
@@ -96,7 +96,7 @@ void change_dir(int x, int y)
 void update()
 {
     struct point new_head;
-    bool new_mouse = false;
+    bool new_food = false;
     
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
@@ -109,7 +109,7 @@ void update()
     if (map[new_head.y][new_head.x] == -1)
     {
         snake_size++;
-        new_mouse = true;
+        new_food = true;
     }
     else if (map[new_head.y][new_head.x] > 0 && map[new_head.y][new_head.x] < snake_size)
     {
@@ -130,5 +130,5 @@ void update()
     map[new_head.y][new_head.x] = 1;
     prev_dir.x = dir.x;
     prev_dir.y = dir.y;
-    if (new_mouse) spawn_mouse();
+    if (new_food) spawn_food();
 }
