@@ -1,3 +1,5 @@
+const Snake = require('./Snake');
+
 const stdin = process.stdin;
 const stdout = process.stdout;
 stdin.setRawMode(true);
@@ -11,8 +13,26 @@ stdin.on('data', key => {
         pause();
 });
 
-console.log("Press SPACE to play/pause...");
-let interval = null, i = 0;
+let interval = null;
+
+function draw(game) {
+    console.clear();
+    for (let i = 0; i < 2 * game.getWidth() + 2; i++) stdout.write('-');
+    stdout.write('\n');
+    for (let i = 0; i < game.getHeight(); i++) {
+        stdout.write('|');
+        for (let j = 0; j < game.getWidth(); j++)
+            if (game.onSnake([i, j]))
+                stdout.write('o ');
+            else if (game.onFood([i, j]))
+                stdout.write('# ');
+            else
+                stdout.write('  ');
+        stdout.write(i == parseInt(game.getHeight() / 2) ? `|\tScore: ${game.getScore()}\n` : '|\n');
+    }
+    for (let i = 0; i < 2 * game.getWidth() + 2; i++) stdout.write('-');
+    stdout.write('\n');
+}
 
 function pause() {
     if (interval) {
@@ -20,8 +40,12 @@ function pause() {
         interval = null;
     } else {
         interval = setInterval(() => {
-            console.log(i);
-            i++;
-        }, 1000);
+            game.update();
+            draw(game);
+        }, 150);
     }
 }
+
+const game = new Snake(10, 10);
+draw(game);
+console.log("Press SPACE to play/pause...");
