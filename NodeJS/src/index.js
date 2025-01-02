@@ -8,7 +8,7 @@ stdin.setEncoding('utf8');
 
 const snake_cell = '🔵', food_cell = '🍎';
 
-let game = new Snake(10, 10);
+let game = new Snake(15, 10);
 const dir = {
     'w': [-1, 0],
     's': [1, 0],
@@ -50,7 +50,7 @@ function draw(game) {
 
 function pause() {
     if (!game.isRunning()) {
-        game = new Snake(10, 10);
+        game = new Snake(15, 10);
         draw(game);
     } else if (interval) {
         console.log("The game is paused.\nPress SPACE to continue.");
