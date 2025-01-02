@@ -9,7 +9,7 @@ class Snake {
     constructor(width, height) {
         this.#width = width;
         this.#height = height;
-        this.#snake = [[height / 2, width / 2], [height / 2, width / 2]];
+        this.#snake = [[parseInt(height / 2), parseInt(width / 2)], [parseInt(height / 2), parseInt(width / 2)]];
         this.#dir = [0, 1];
         this.#prev_dir = this.#dir;
         this.#food = null;
