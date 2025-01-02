@@ -51,7 +51,6 @@ class Snake {
     }
     spawnFood() {
         if (!this.#running) return;
-        console.log("MEME");
         let free = [];
         for (let x = 0; x < this.getHeight(); x++)
             for (let y = 0; y < this.getWidth(); y++) {
@@ -63,6 +62,7 @@ class Snake {
     getScore() { return this.#snake.length - 2; }
     getWidth() { return this.#width; }
     getHeight() { return this.#height; }
+    isRunning() { return this.#running; }
 }
 
 module.exports = Snake;
