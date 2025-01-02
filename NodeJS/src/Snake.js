@@ -2,6 +2,7 @@ class Snake {
     #snake
     #food
     #dir
+    #prev_dir
     #width
     #height
     #running
@@ -10,6 +11,7 @@ class Snake {
         this.#height = height;
         this.#snake = [[height / 2, width / 2], [height / 2, width / 2]];
         this.#dir = [0, 1];
+        this.#prev_dir = this.#dir;
         this.#food = null;
         this.#running = true;
         this.spawnFood();
@@ -20,6 +22,7 @@ class Snake {
             (this.getHeight() + this.#dir[0] + this.#snake[0][0]) % this.getHeight(),
             (this.getWidth() + this.#dir[1] + this.#snake[0][1]) % this.getWidth()
         ];
+        this.#prev_dir = this.#dir;
         if (!this.onFood(newHead))
             this.#snake.pop();
         if (this.onSnake(newHead)) {
@@ -32,7 +35,8 @@ class Snake {
         return true;
     }
     changeDir(dir) {
-        if (!this.#running) return;
+        if (!this.#running || dir[0] === this.#prev_dir[0] || dir[1] === this.#prev_dir[1])
+            return;
         this.#dir = dir;
     }
     onSnake([x, y]) {
