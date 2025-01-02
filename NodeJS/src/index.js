@@ -6,6 +6,8 @@ stdin.setRawMode(true);
 stdin.resume();
 stdin.setEncoding('utf8');
 
+const snake_cell = '🔵', food_cell = '🍎';
+
 let game = new Snake(10, 10);
 const dir = {
     'w': [-1, 0],
@@ -27,21 +29,23 @@ let interval = null;
 
 function draw(game) {
     console.clear();
-    for (let i = 0; i < 2 * game.getWidth() + 2; i++) stdout.write('-');
-    stdout.write('\n');
+    stdout.write('╔');
+    for (let i = 0; i < 2 * game.getWidth(); i++) stdout.write('═');
+    stdout.write('╗\n');
     for (let i = 0; i < game.getHeight(); i++) {
-        stdout.write('|');
+        stdout.write('║');
         for (let j = 0; j < game.getWidth(); j++)
             if (game.onSnake([i, j]))
-                stdout.write('o ');
+                stdout.write(snake_cell);
             else if (game.onFood([i, j]))
-                stdout.write('# ');
+                stdout.write(food_cell);
             else
                 stdout.write('  ');
-        stdout.write(i == parseInt(game.getHeight() / 2) ? `|\tScore: ${game.getScore()}\n` : '|\n');
+        stdout.write(i == parseInt(game.getHeight() / 2) ? `║\tScore: ${game.getScore()}\n` : '║\n');
     }
-    for (let i = 0; i < 2 * game.getWidth() + 2; i++) stdout.write('-');
-    stdout.write('\n');
+    stdout.write('╚');
+    for (let i = 0; i < 2 * game.getWidth(); i++) stdout.write('═');
+    stdout.write('╝\n');
 }
 
 function pause() {
