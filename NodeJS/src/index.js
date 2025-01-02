@@ -6,7 +6,7 @@ stdin.setRawMode(true);
 stdin.resume();
 stdin.setEncoding('utf8');
 
-const game = new Snake(10, 10);
+let game = new Snake(10, 10);
 const dir = {
     'w': [-1, 0],
     's': [1, 0],
@@ -45,13 +45,22 @@ function draw(game) {
 }
 
 function pause() {
-    if (interval) {
+    if (!game.isRunning()) {
+        game = new Snake(10, 10);
+        draw(game);
+    } else if (interval) {
+        console.log("The game is paused.\nPress SPACE to continue.");
         clearInterval(interval);
         interval = null;
     } else {
         interval = setInterval(() => {
-            game.update();
-            draw(game);
+            if (game.update())
+                draw(game);
+            else {
+                console.log("Game over!\nPress SPACE to play again.");
+                clearInterval(interval);
+                interval = null;
+            }
         }, 150);
     }
 }
