@@ -29,6 +29,7 @@ let interval = null;
 
 function draw(game) {
     console.clear();
+    console.log(`Score: ${game.getScore()}`);
     stdout.write('╔');
     for (let i = 0; i < 2 * game.getWidth(); i++) stdout.write('═');
     stdout.write('╗\n');
@@ -41,7 +42,7 @@ function draw(game) {
                 stdout.write(food_cell);
             else
                 stdout.write('  ');
-        stdout.write(i == parseInt(game.getHeight() / 2) ? `║\tScore: ${game.getScore()}\n` : '║\n');
+        stdout.write('║\n');
     }
     stdout.write('╚');
     for (let i = 0; i < 2 * game.getWidth(); i++) stdout.write('═');
