@@ -59,7 +59,7 @@ class Snake {
             }
         this.#food = free[Math.floor(Math.random() * free.length)];
     }
-    getScore() { return this.#snake.length - 2; }
+    getScore() { return 50 * (this.#snake.length - 2); }
     getWidth() { return this.#width; }
     getHeight() { return this.#height; }
     isRunning() { return this.#running; }
