@@ -3,6 +3,8 @@ project(SnakeGame C)
 
 set(CMAKE_C_STANDARD 99)
 
+add_definitions(-DWIDTH=15 -DHEIGHT=10)
+
 include_directories(include)
 
 file(GLOB SRC_FILES "src/*.c")

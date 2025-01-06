@@ -1,43 +1,11 @@
 #include "snake.h"
 #include "platform.h"
+#include "draw.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 bool play = false, game = false;
-
-void draw()
-{
-    clear();
-    printf("Score: %d\n", (snake_size - 2) * 50);
-    set_color();
-    printf("╔");
-    for (int i = 0; i < 2 * WIDTH; i++)
-        printf("═");
-    printf("╗\n");
-    for (int i = 0; i < HEIGHT; i++)
-    {
-        printf("║");
-        for (int j = 0; j < WIDTH; j++)
-            if (map[i][j] > 0)
-                printf(SNAKE);
-            else if (map[i][j] < 0)
-                printf(FOOD);
-            else
-                printf("  ");
-        printf("║\n");
-    }
-    printf("╚");
-    for (int i = 0; i < 2 * WIDTH; i++)
-        printf("═");
-    printf("╝\n");
-    reset_color();
-    if (message != NULL && strcmp(message, "") != 0)
-    {
-        printf("\n%s\n", message);
-        message = "";
-    }
-}
 
 void spawn_food()
 {
@@ -69,16 +37,16 @@ void reset(bool start)
     snake_size = 2;
     spawn_food();
     if (!start)
-        message = "Press SPACE to start the game.\nPress Q to quit.";
-    draw();
+        set_message("Press SPACE to start the game.\nPress Q to quit.");
+    draw(map);
 }
 
 void pause_game()
 {
     if (play)
     {
-        message = "The game is paused. Press SPACE to continue.";
-        draw();
+        set_message("The game is paused. Press SPACE to continue.");
+        draw(map);
     }
     play = !play;
 }
@@ -114,7 +82,8 @@ void update()
     else if (map[new_head.y][new_head.x] > 0 && map[new_head.y][new_head.x] < snake_size)
     {
         game = false;
-        message = "Game over! Press SPACE to play again.";
+        set_message("Game over! Press SPACE to play again.");
+        draw(map);
         return;
     }
 
@@ -131,4 +100,5 @@ void update()
     prev_dir.x = dir.x;
     prev_dir.y = dir.y;
     if (new_food) spawn_food();
+    draw(map);
 }

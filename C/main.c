@@ -55,7 +55,7 @@ int main()
         if (game && play)
         {
             update();
-            draw();
+            //draw();
         }
         usleep(DELAY_MS * 1000);
     }
