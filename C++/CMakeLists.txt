@@ -15,6 +15,12 @@ set(ALL_FILES ${MAIN_FILE} ${SRC_FILES})
 
 add_executable(snake ${ALL_FILES})
 
+# Find and link ncurses
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
+target_link_libraries(snake ${CURSES_LIBRARIES})
+
+# Link threads
 find_package(Threads REQUIRED)
 target_link_libraries(snake Threads::Threads)
 
