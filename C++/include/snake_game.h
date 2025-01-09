@@ -7,8 +7,8 @@ class SnakeGame
 {
 private:
     int width, height;
-    std::deque <std::pair<int, int> > snake;
-    std::pair <int, int> food;
+    std::deque <std::pair<unsigned int, unsigned int> > snake;
+    std::pair <unsigned int, unsigned int> food;
     std::pair <int, int> dir;
     bool running;
     void spawnFood();
