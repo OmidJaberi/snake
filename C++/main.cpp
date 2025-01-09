@@ -87,6 +87,8 @@ int main()
                 for (int j = 0; j < 10; j++)
                     if (game.onSnake(std::make_pair(i, j)))
                         std::cout << "# ";
+                    else if (game.onFood(std::make_pair(i, j)))
+                        std::cout << "@ ";
                     else
                         std::cout << ". ";
                 std::cout << std::endl;
