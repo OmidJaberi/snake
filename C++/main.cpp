@@ -60,10 +60,10 @@ int main()
     while (running) {
         char key = getKeyPress();
         if (key != 0)
-		{
+		    {
             std::cout << "\rYou pressed: " << key << std::endl;
             if (key == 'q')
-			{
+			      {
                 running = false;
             }
             if (key == 'w')
@@ -79,7 +79,7 @@ int main()
         static auto last_time = std::chrono::steady_clock::now();
         auto now = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 300)
-		{
+		    {
             std::cout << "\e[1;1H\e[2J";
             for (int i = 0; i < 10; i++)
             {
