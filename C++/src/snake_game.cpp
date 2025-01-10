@@ -5,6 +5,7 @@
 
 SnakeGame::SnakeGame(int _width, int _height) : width(_width), height(_height)
 {
+    this->running = true;
     this->snake.push_back(std::make_pair(height / 2, width / 2));
     this->snake.push_back(std::make_pair(height / 2, width / 2));
     this->dir = std::make_pair(0, 1);
@@ -21,25 +22,34 @@ bool SnakeGame::onFood(std::pair<int, int> cell)
     return this->food == cell;
 }
 
-void SnakeGame::update()
+bool SnakeGame::update()
 {
+    if (!this->running) return false;
     std::pair<unsigned int, unsigned int> new_head;
     new_head.first = (this->height + this->snake.front().first + this->dir.first) % this->height;
     new_head.second = (this->width + this->snake.front().second + this->dir.second) % this->width;
+    if (this->onSnake(new_head))
+    {
+        this->running = false;
+        return false;
+    }
     this->snake.push_front(new_head);
     if (this->onFood(new_head))
         this->spawnFood();
     else
         this->snake.pop_back();
+    return true;
 }
 
 void SnakeGame::changeDir(std::pair<int, int> dir)
 {
+    if (!this->running) return;
     this->dir = dir;
 }
 
 void SnakeGame::spawnFood()
 {
+    if (!this->running) return;
     std::srand(time(NULL));
     std::vector<std::pair<int, int> > free;
     for (int i = 0; i < this->height; i++)
