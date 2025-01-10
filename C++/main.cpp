@@ -93,12 +93,15 @@ int main()
                         std::cout << ". ";
                 std::cout << std::endl;
             }
-            game.update();
+            running = game.update();
             last_time = now;
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
+
+    if (!game.isRunning())
+        std::cout << "\rGame over!!!" << std::endl;
 
     cleanup();
     return 0;
