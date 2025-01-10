@@ -9,7 +9,7 @@ private:
     int width, height;
     std::deque <std::pair<unsigned int, unsigned int> > snake;
     std::pair <unsigned int, unsigned int> food;
-    std::pair <int, int> dir;
+    std::pair <int, int> dir, prev_dir;
     bool running;
     void spawnFood();
 public:
