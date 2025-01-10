@@ -9,6 +9,7 @@ SnakeGame::SnakeGame(int _width, int _height) : width(_width), height(_height)
     this->snake.push_back(std::make_pair(height / 2, width / 2));
     this->snake.push_back(std::make_pair(height / 2, width / 2));
     this->dir = std::make_pair(0, 1);
+    this->prev_dir = this->dir;
     this->spawnFood();
 }
 
@@ -28,6 +29,7 @@ bool SnakeGame::update()
     std::pair<unsigned int, unsigned int> new_head;
     new_head.first = (this->height + this->snake.front().first + this->dir.first) % this->height;
     new_head.second = (this->width + this->snake.front().second + this->dir.second) % this->width;
+    this->prev_dir = this->dir;
     if (this->onSnake(new_head))
     {
         this->running = false;
@@ -44,6 +46,7 @@ bool SnakeGame::update()
 void SnakeGame::changeDir(std::pair<int, int> dir)
 {
     if (!this->running) return;
+    if (this->prev_dir.first == dir.first || this->prev_dir.second == dir.second) return;
     this->dir = dir;
 }
 
