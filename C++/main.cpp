@@ -4,6 +4,7 @@
 #include "snake_game.h"
 #include "key_press.h"
 
+bool running = true;
 SnakeGame game(10, 10);
 KeyPress kp;
 
@@ -24,11 +25,29 @@ void draw()
     }
 }
 
+void keyPressHandler(char key)
+{
+    if (key != 0)
+    {
+        if (key == 'q')
+            running = false;
+        if (key == 'w')
+            game.changeDir(std::make_pair(-1, 0));
+        else if (key == 's')
+            game.changeDir(std::make_pair(1, 0));
+        else if (key == 'a')
+            game.changeDir(std::make_pair(0, -1));
+        else if (key == 'd')
+            game.changeDir(std::make_pair(0, 1));
+    }
+}
+
 int main()
 {
-    bool running = true;
     while (running)
     {
+        keyPressHandler(kp.getKey());
+
         static auto last_time = std::chrono::steady_clock::now();
         auto now = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 300)
@@ -37,22 +56,6 @@ int main()
             running = game.update();
             last_time = now;
         }
-
-        char key = kp.getKey();
-        if (key != 0)
-        {
-            if (key == 'q')
-                running = false;
-            if (key == 'w')
-                game.changeDir(std::make_pair(-1, 0));
-            else if (key == 's')
-                game.changeDir(std::make_pair(1, 0));
-            else if (key == 'a')
-                game.changeDir(std::make_pair(0, -1));
-            else if (key == 'd')
-                game.changeDir(std::make_pair(0, 1));
-        }
-
     }
 
     if (!game.isRunning())
