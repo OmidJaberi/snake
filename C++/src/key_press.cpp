@@ -32,14 +32,14 @@ char KeyPress::getKey()
 {
 #ifdef _WIN32
     if (_kbhit())
-	{
+    {
         return _getch();
     }
     return 0;
 #else
     int ch = getch();
     if (ch != ERR)
-	{
+    {
         return ch;
     }
     return 0;
