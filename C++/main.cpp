@@ -3,27 +3,12 @@
 #include <chrono>
 #include "snake_game.h"
 #include "key_press.h"
+#include "console_graphics.h"
 
 bool running = true;
 SnakeGame game(10, 10);
+ConsoleGraphics context(game);
 KeyPress kp;
-
-void draw()
-{
-    std::cout << "\e[1;1H\e[2J";
-    for (int i = 0; i < game.getHeight(); i++)
-    {
-        std::cout << "\r";
-        for (int j = 0; j < game.getWidth(); j++)
-            if (game.onSnake(std::make_pair(i, j)))
-                std::cout << "# ";
-            else if (game.onFood(std::make_pair(i, j)))
-                std::cout << "@ ";
-            else
-                std::cout << ". ";
-        std::cout << std::endl;
-    }
-}
 
 void keyPressHandler(char key)
 {
@@ -52,7 +37,8 @@ int main()
         auto now = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 300)
         {
-            draw();
+            context.set_message("Some message...");
+            context.draw();
             running = game.update();
             last_time = now;
         }

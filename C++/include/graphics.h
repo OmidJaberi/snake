@@ -6,12 +6,13 @@
 
 class Graphics
 {
+protected:
     SnakeGame *game;
     std::string message;
 public:
-    Graphics(SnakeGame&);
-    ~Graphics();
-    void draw();
+    Graphics(SnakeGame& _game) : game(&_game) {};
+    virtual ~Graphics() = default;
+    virtual void draw() = 0;
     void set_message(std::string msg) { message = msg; }
 };
 
