@@ -43,11 +43,13 @@ bool SnakeGame::update()
     return true;
 }
 
-void SnakeGame::changeDir(std::pair<int, int> dir)
+bool SnakeGame::changeDir(std::pair<int, int> dir)
 {
-    if (!this->running) return;
-    if (this->prev_dir.first == dir.first || this->prev_dir.second == dir.second) return;
+    if (!this->running) return false;
+    if (this->prev_dir.first == dir.first || this->prev_dir.second == dir.second)
+        return false;
     this->dir = dir;
+    return true;
 }
 
 void SnakeGame::spawnFood()

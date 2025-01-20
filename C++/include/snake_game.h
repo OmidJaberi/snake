@@ -17,7 +17,7 @@ public:
     bool onSnake(std::pair<int, int>);
     bool onFood(std::pair<int, int>);
     bool update();
-    void changeDir(std::pair<int, int> dir);
+    bool changeDir(std::pair<int, int> dir);
 
     int getWidth();
     int getHeight();
