@@ -35,11 +35,11 @@ int main()
 
         static auto last_time = std::chrono::steady_clock::now();
         auto now = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 300)
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 150)
         {
             context.set_message("Some message...");
-            context.draw();
             running = game.update();
+            context.draw();
             last_time = now;
         }
     }
