@@ -7,6 +7,9 @@
 
 class ConsoleGraphics : public Graphics
 {
+    const std::string snake = "# ";
+    const std::string food = "@ ";
+    const std::string grass = "  ";
 public:
     ConsoleGraphics(SnakeGame& _game) : Graphics(_game) {};
     void draw() override;

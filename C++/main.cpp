@@ -37,7 +37,7 @@ int main()
         auto now = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 150)
         {
-            context.set_message("Some message...");
+            context.set_message("Score: " + std::to_string(game.getScore()));
             running = game.update();
             context.draw();
             last_time = now;
