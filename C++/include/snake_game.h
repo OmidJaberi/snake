@@ -6,6 +6,7 @@
 class SnakeGame
 {
 private:
+    static const int score_unit = 50;
     int width, height;
     std::deque <std::pair<unsigned int, unsigned int> > snake;
     std::pair <unsigned int, unsigned int> food;
