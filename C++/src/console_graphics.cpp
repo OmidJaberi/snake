@@ -4,7 +4,8 @@
 void ConsoleGraphics::draw()
 {
     clear();
-    std::cout << "╔";
+    std::cout << "Score: " << game->getScore() << std::endl;
+    std::cout << "\r╔";
     for (int i = 0; i < 2 * game->getWidth(); i++)
         std::cout << "═";
     std::cout << "╗" << std::endl;

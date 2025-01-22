@@ -87,7 +87,7 @@ int SnakeGame::getHeight()
 
 int SnakeGame::getScore()
 {
-    return this->snake.size() - 2;
+    return SnakeGame::score_unit * (this->snake.size() - 2);
 }
 
 bool SnakeGame::isRunning()
