@@ -20,7 +20,9 @@ void keyPressHandler(char key)
             running = false;
         else if (key == ' ')
         {
-            if (game.pause())
+            if (!game.isRunning())
+                game.init();
+            else if (game.pause())
                 message = "The game is paused. Press space to continue...";
             else
                 message = "";
@@ -46,15 +48,12 @@ int main()
         auto now = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 150)
         {
-            running = game.update();
+            if (!game.update())
+                message = "Game over!!! Press SPACE to start over.";
             context.set_message(message);
             context.draw();
             last_time = now;
         }
     }
-
-    if (!game.isRunning())
-        std::cout << "\rGame over!!!" << std::endl;
-
     return 0;
 }

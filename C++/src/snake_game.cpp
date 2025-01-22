@@ -3,10 +3,11 @@
 #include <cstdlib>
 #include <ctime>
 
-SnakeGame::SnakeGame(int _width, int _height) : width(_width), height(_height)
+void SnakeGame::init()
 {
     this->running = true;
     this->paused = false;
+    this->snake.clear();
     this->snake.push_back(std::make_pair(height / 2, width / 2));
     this->snake.push_back(std::make_pair(height / 2, width / 2));
     this->dir = std::make_pair(0, 1);
