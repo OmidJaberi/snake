@@ -10,7 +10,7 @@ private:
     std::deque <std::pair<unsigned int, unsigned int> > snake;
     std::pair <unsigned int, unsigned int> food;
     std::pair <int, int> dir, prev_dir;
-    bool running;
+    bool running, paused;
     void spawnFood();
 public:
     SnakeGame(int, int);
@@ -18,6 +18,7 @@ public:
     bool onFood(std::pair<int, int>);
     bool update();
     bool changeDir(std::pair<int, int> dir);
+    bool pause();
 
     int getWidth();
     int getHeight();

@@ -10,13 +10,22 @@ SnakeGame game(10, 10);
 ConsoleGraphics context(game);
 KeyPress kp;
 
+std::string message;
+
 void keyPressHandler(char key)
 {
     if (key != 0)
     {
         if (key == 'q')
             running = false;
-        if (key == 'w')
+        else if (key == ' ')
+        {
+            if (game.pause())
+                message = "The game is paused. Press space to continue...";
+            else
+                message = "";
+        }
+        else if (key == 'w')
             game.changeDir(std::make_pair(-1, 0));
         else if (key == 's')
             game.changeDir(std::make_pair(1, 0));
@@ -37,8 +46,8 @@ int main()
         auto now = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 150)
         {
-            context.set_message("Score: " + std::to_string(game.getScore()));
             running = game.update();
+            context.set_message(message);
             context.draw();
             last_time = now;
         }
