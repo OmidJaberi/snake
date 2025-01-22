@@ -14,27 +14,31 @@ std::string message;
 
 void keyPressHandler(char key)
 {
-    if (key != 0)
+    switch(key)
     {
-        if (key == 'q')
+        case 'q':
             running = false;
-        else if (key == ' ')
-        {
+            break;
+        case ' ':
             if (!game.isRunning())
                 game.init();
             else if (game.pause())
                 message = "The game is paused. Press space to continue...";
             else
                 message = "";
-        }
-        else if (key == 'w')
+            break;
+        case 'w':
             game.changeDir(std::make_pair(-1, 0));
-        else if (key == 's')
+            break;
+        case 's':
             game.changeDir(std::make_pair(1, 0));
-        else if (key == 'a')
+            break;
+        case 'a':
             game.changeDir(std::make_pair(0, -1));
-        else if (key == 'd')
+            break;
+        case 'd':
             game.changeDir(std::make_pair(0, 1));
+            break;
     }
 }
 
