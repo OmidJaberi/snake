@@ -21,7 +21,10 @@ void keyPressHandler(char key)
             break;
         case ' ':
             if (!game.isRunning())
+            {
                 game.init();
+                message = "";
+            }
             else if (game.pause())
                 message = "The game is paused. Press space to continue...";
             else
