@@ -6,6 +6,7 @@
 SnakeGame::SnakeGame(int _width, int _height) : width(_width), height(_height)
 {
     this->running = true;
+    this->paused = false;
     this->snake.push_back(std::make_pair(height / 2, width / 2));
     this->snake.push_back(std::make_pair(height / 2, width / 2));
     this->dir = std::make_pair(0, 1);
@@ -26,6 +27,7 @@ bool SnakeGame::onFood(std::pair<int, int> cell)
 bool SnakeGame::update()
 {
     if (!this->running) return false;
+    if (this->paused) return true;
     std::pair<unsigned int, unsigned int> new_head;
     new_head.first = (this->height + this->snake.front().first + this->dir.first) % this->height;
     new_head.second = (this->width + this->snake.front().second + this->dir.second) % this->width;
@@ -45,7 +47,7 @@ bool SnakeGame::update()
 
 bool SnakeGame::changeDir(std::pair<int, int> dir)
 {
-    if (!this->running) return false;
+    if (!this->running || this->paused) return false;
     if (this->prev_dir.first == dir.first || this->prev_dir.second == dir.second)
         return false;
     this->dir = dir;
@@ -65,6 +67,12 @@ void SnakeGame::spawnFood()
                 free.push_back(cell);
         }
     this->food = free[std::rand() % free.size()];
+}
+
+bool SnakeGame::pause()
+{
+    if (!running) return false;
+    return (paused = !paused);
 }
 
 int SnakeGame::getWidth()
