@@ -14,7 +14,8 @@ private:
     bool running, paused;
     void spawnFood();
 public:
-    SnakeGame(int, int);
+    SnakeGame(int _width, int _height) : width(_width), height(_height) { init(); }
+    void init();
     bool onSnake(std::pair<int, int>);
     bool onFood(std::pair<int, int>);
     bool update();
