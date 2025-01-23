@@ -33,7 +33,7 @@ bool SnakeGame::update()
     new_head.first = (this->height + this->snake.front().first + this->dir.first) % this->height;
     new_head.second = (this->width + this->snake.front().second + this->dir.second) % this->width;
     this->prev_dir = this->dir;
-    if (this->onSnake(new_head))
+    if (this->onSnake(new_head) && new_head != this->snake.back())
     {
         this->running = false;
         return false;
