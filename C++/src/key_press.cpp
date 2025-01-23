@@ -7,41 +7,38 @@
 
 KeyPress::KeyPress()
 {
-#ifdef _WIN32
-    // No setup required for Windows
-#else
+#ifndef _WIN32
     initscr();
     cbreak();
     noecho();
-    nodelay(stdscr, TRUE); // Non-blocking input
     keypad(stdscr, TRUE);
 #endif
 }
 
 KeyPress::~KeyPress()
 {
-#ifdef _WIN32
-    // No cleanup required for Windows
-#else
-    def_prog_mode(); // Retain the screen without clearing
-    //endwin();
+#ifndef _WIN32
+    endwin();
 #endif
 }
 
 char KeyPress::getKey()
 {
 #ifdef _WIN32
-    if (_kbhit())
-    {
-        return _getch();
-    }
-    return 0;
+    return _getch();
 #else
-    int ch = getch();
-    if (ch != ERR)
-    {
-        return ch;
-    }
-    return 0;
+    return getch();
 #endif
+}
+
+void KeyPress::add_listener(std::function<void(int)> handler, std::atomic<bool> &running)
+{
+	std::thread([handler, this, &running]()
+	{
+		while (running)
+		{
+			char c = getKey();
+			handler(c);
+		}
+	}).detach();
 }
