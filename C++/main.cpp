@@ -1,11 +1,13 @@
 #include <iostream>
-#include <thread>
 #include <chrono>
+#include <thread>
+#include <atomic>
+
 #include "snake_game.h"
 #include "key_press.h"
 #include "console_graphics.h"
 
-bool running = true;
+std::atomic<bool> running{true};
 SnakeGame game(10, 10);
 ConsoleGraphics context(game);
 KeyPress kp;
@@ -47,20 +49,14 @@ void keyPressHandler(char key)
 
 int main()
 {
+	kp.add_listener(keyPressHandler, running);
     while (running)
     {
-        keyPressHandler(kp.getKey());
-
-        static auto last_time = std::chrono::steady_clock::now();
-        auto now = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() >= 150)
-        {
-            if (!game.update())
-                message = "Game over!!! Press SPACE to start over.";
-            context.set_message(message);
-            context.draw();
-            last_time = now;
-        }
+		if (!game.update())
+			message = "Game over!!! Press SPACE to start over.";
+        context.set_message(message);
+		context.draw();
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
     }
     return 0;
 }
