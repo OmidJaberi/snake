@@ -33,12 +33,12 @@ char KeyPress::getKey()
 
 void KeyPress::add_listener(std::function<void(int)> handler, std::atomic<bool> &running)
 {
-	std::thread([handler, this, &running]()
-	{
-		while (running)
-		{
-			char c = getKey();
-			handler(c);
-		}
-	}).detach();
+    std::thread([handler, this, &running]()
+    {
+        while (running)
+        {
+            char c = getKey();
+            handler(c);
+        }
+    }).detach();
 }

@@ -9,7 +9,7 @@ class KeyPress {
 public:
     KeyPress();
     char getKey();
-	void add_listener(std::function<void(int)>, std::atomic<bool> &running);
+    void add_listener(std::function<void(int)>, std::atomic<bool> &running);
     ~KeyPress();
 };
 

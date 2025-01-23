@@ -49,14 +49,14 @@ void keyPressHandler(char key)
 
 int main()
 {
-	kp.add_listener(keyPressHandler, running);
+    kp.add_listener(keyPressHandler, running);
     while (running)
     {
-		if (!game.update())
-			message = "Game over!!! Press SPACE to start over.";
+        if (!game.update())
+            message = "Game over!!! Press SPACE to start over.";
         context.set_message(message);
-		context.draw();
-		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+        context.draw();
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
     }
     return 0;
 }
