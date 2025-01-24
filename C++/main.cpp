@@ -33,15 +33,19 @@ void keyPressHandler(char key)
                 message = "";
             break;
         case 'w':
+        case 3:
             game.changeDir(std::make_pair(-1, 0));
             break;
         case 's':
+        case 2:
             game.changeDir(std::make_pair(1, 0));
             break;
         case 'a':
+        case 4:
             game.changeDir(std::make_pair(0, -1));
             break;
         case 'd':
+        case 5:
             game.changeDir(std::make_pair(0, 1));
             break;
     }
