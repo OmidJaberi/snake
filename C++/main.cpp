@@ -7,12 +7,14 @@
 #include "key_press.h"
 #include "console_graphics.h"
 
-std::atomic<bool> running{true};
-SnakeGame game(10, 10);
-ConsoleGraphics context(game);
-KeyPress kp;
+#define WIDTH 15
+#define HEIGHT 10
+#define SLEEP_MS 120
 
-std::string message;
+std::atomic<bool> running{true};
+SnakeGame game(WIDTH, HEIGHT);
+Graphics *graphics = new ConsoleGraphics(game);
+KeyPress kp;
 
 void keyPressHandler(char key)
 {
@@ -25,12 +27,12 @@ void keyPressHandler(char key)
             if (!game.isRunning())
             {
                 game.init();
-                message = "";
+                graphics->set_message("");
             }
             else if (game.pause())
-                message = "The game is paused. Press space to continue...";
+                graphics->set_message("The game is paused. Press space to continue...");
             else
-                message = "";
+                graphics->set_message("");
             break;
         case 'w':
         case 3:
@@ -57,10 +59,9 @@ int main()
     while (running)
     {
         if (!game.update())
-            message = "Game over!!! Press SPACE to start over.";
-        context.set_message(message);
-        context.draw();
-        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+            graphics->set_message("Game over!!! Press SPACE to start over.");
+        graphics->draw();
+        std::this_thread::sleep_for(std::chrono::milliseconds(SLEEP_MS));
     }
     return 0;
 }
