@@ -1,7 +1,6 @@
 #ifndef KEY_PRESS_H
 #define KEY_PRESS_H
 
-#include <thread>
 #include <functional>
 #include <atomic>
 
