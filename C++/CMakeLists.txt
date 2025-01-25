@@ -3,7 +3,7 @@ project(SnakeGame CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_definitions(-DWIDTH=15 -DHEIGHT=10)
+add_definitions(-DWIDTH=15 -DHEIGHT=10 -DSLEEP_MS=120)
 
 include_directories(include)
 

@@ -7,10 +7,6 @@
 #include "key_press.h"
 #include "console_graphics.h"
 
-#define WIDTH 15
-#define HEIGHT 10
-#define SLEEP_MS 120
-
 std::atomic<bool> running{true};
 SnakeGame game(WIDTH, HEIGHT);
 Graphics *graphics = new ConsoleGraphics(game);
