@@ -5,13 +5,16 @@
 
 class ConsoleGraphics : public Graphics
 {
+private:
     const std::string snake = "🔵";
     const std::string food = "🍎";
     const std::string grass = "  ";
+    void set_color();
+    void reset_color();
+    void clear();
 public:
     ConsoleGraphics(SnakeGame& _game) : Graphics(_game) {};
     void draw() override;
-    void clear();
 };
 
 #endif

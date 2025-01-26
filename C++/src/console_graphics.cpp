@@ -5,9 +5,8 @@ void ConsoleGraphics::draw()
 {
     clear();
     std::cout << "Score: " << game->getScore() << std::endl;
-    
-    std::cout << "\033[42m\033[37m";
-    
+
+    set_color();
     std::cout << "\r╔";
     for (int i = 0; i < 2 * game->getWidth(); i++)
         std::cout << "═";
@@ -28,9 +27,8 @@ void ConsoleGraphics::draw()
     for (int i = 0; i < 2 * game->getWidth(); i++)
         std::cout << "═";
     std::cout << "╝" << std::endl;
-    
-    std::cout << "\033[0m";
-    
+    reset_color();
+
     if (message != "")
         std::cout << "\r" << message << std::endl;
 }
@@ -39,3 +37,13 @@ void ConsoleGraphics::clear()
 {
     printf("\e[1;1H\e[2J");
 }
+
+void ConsoleGraphics::set_color()
+{
+    std::cout << "\033[42m\033[37m";
+}
+
+void ConsoleGraphics::reset_color()
+{
+    std::cout << "\033[0m";
+}    
