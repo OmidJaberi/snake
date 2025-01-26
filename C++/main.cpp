@@ -32,19 +32,19 @@ void keyPressHandler(char key)
             break;
         case 'w':
         case 3:
-            game.changeDir(std::make_pair(-1, 0));
+            game.changeDir(-1, 0);
             break;
         case 's':
         case 2:
-            game.changeDir(std::make_pair(1, 0));
+            game.changeDir(1, 0);
             break;
         case 'a':
         case 4:
-            game.changeDir(std::make_pair(0, -1));
+            game.changeDir(0, -1);
             break;
         case 'd':
         case 5:
-            game.changeDir(std::make_pair(0, 1));
+            game.changeDir(0, 1);
             break;
     }
 }

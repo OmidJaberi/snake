@@ -15,9 +15,9 @@ void ConsoleGraphics::draw()
     {
         std::cout << "\r║";
         for (int j = 0; j < game->getWidth(); j++)
-            if (game->onSnake(std::make_pair(i, j)))
+            if (game->onSnake(i, j))
                 std::cout << snake;
-            else if (game->onFood(std::make_pair(i, j)))
+            else if (game->onFood(i, j))
                 std::cout << food;
             else
                 std::cout << grass;
