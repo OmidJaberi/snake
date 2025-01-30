@@ -3,8 +3,13 @@
 
 #include <functional>
 #include <atomic>
+#ifndef _WIN32
+    #include <termios.h>
+#endif
 
 class KeyPress {
+private:
+    struct termios old_termios;
 public:
     KeyPress();
     char getKey();
