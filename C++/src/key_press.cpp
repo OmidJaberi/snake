@@ -1,25 +1,28 @@
 #include "key_press.h"
 #include <thread>
 #ifdef _WIN32
-#include <conio.h>
+    #include <conio.h>
 #else
-#include <ncurses.h>
+    #include <termios.h>
+    #include <unistd.h>
+    #include <fcntl.h>
 #endif
 
 KeyPress::KeyPress()
 {
 #ifndef _WIN32
-    initscr();
-    cbreak();
-    noecho();
-    keypad(stdscr, TRUE);
+    struct termios new_termios;
+    tcgetattr(STDIN_FILENO, &old_termios);
+    new_termios = old_termios;
+    new_termios.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &new_termios);
 #endif
 }
 
 KeyPress::~KeyPress()
 {
 #ifndef _WIN32
-    endwin();
+    tcsetattr(STDIN_FILENO, TCSANOW, &old_termios);
 #endif
 }
 
@@ -28,7 +31,9 @@ char KeyPress::getKey()
 #ifdef _WIN32
     return _getch();
 #else
-    return getch();
+    char c = 0;
+    read(STDIN_FILENO, &c, 1);
+    return c;
 #endif
 }
 
@@ -39,7 +44,7 @@ void KeyPress::add_listener(std::function<void(int)> handler, std::atomic<bool> 
         while (running)
         {
             char c = getKey();
-            handler(c);
+            if (c != 0) handler(c);
         }
     }).detach();
 }
