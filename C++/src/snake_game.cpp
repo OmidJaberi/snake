@@ -1,5 +1,6 @@
 #include "snake_game.h"
 #include <vector>
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 
@@ -15,12 +16,12 @@ void SnakeGame::init()
     this->spawnFood();
 }
 
-bool SnakeGame::onSnake(std::pair<int, int> cell)
+bool SnakeGame::onSnake(std::pair<unsigned int, unsigned int> cell)
 {
     return std::find(this->snake.begin(), this->snake.end(), cell) != this->snake.end();
 }
 
-bool SnakeGame::onFood(std::pair<int, int> cell)
+bool SnakeGame::onFood(std::pair<unsigned int, unsigned int> cell)
 {
     return this->food == cell;
 }
