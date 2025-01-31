@@ -31,19 +31,19 @@ void keyPressHandler(char key)
                 graphics->set_message("");
             break;
         case 'w':
-        case 3:
+        case 'A':
             game.changeDir(-1, 0);
             break;
         case 's':
-        case 2:
+        case 'B':
             game.changeDir(1, 0);
             break;
         case 'a':
-        case 4:
+        case 'D':
             game.changeDir(0, -1);
             break;
         case 'd':
-        case 5:
+        case 'C':
             game.changeDir(0, 1);
             break;
     }
