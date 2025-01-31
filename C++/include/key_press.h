@@ -9,7 +9,9 @@
 
 class KeyPress {
 private:
+#ifndef _WIN32
     struct termios old_termios;
+#endif
 public:
     KeyPress();
     char getKey();
