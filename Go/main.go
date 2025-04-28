@@ -6,7 +6,11 @@ import (
 	"os/signal"
 	"syscall"
 	"unsafe"
+	"time"
 )
+
+var x int = 3
+var y int = 3
 
 func main() {
 	// Save current settings
@@ -29,7 +33,20 @@ func main() {
 	go listenForKeyPress()
 
 	// Main thread
-	fmt.Println("Press ESC to quit...")
+	for {
+		fmt.Print("\033[H\033[2J") // Clear Screen
+		for i := 0; i < 7; i++ {
+			for j := 0; j < 7; j++ {
+				if i == y && j == x {
+					fmt.Print("o ")
+				} else {
+					fmt.Print(". ")
+				}
+			}
+			fmt.Println()
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
 	select {} // Block forever
 }
 
@@ -40,10 +57,18 @@ func listenForKeyPress() {
 		os.Stdin.Read(buf)
 		key := buf[0]
 
-		fmt.Printf("Key pressed: %v ('%c')\n", key, key)
+		//fmt.Printf("Key pressed: %v ('%c')\n", key, key)
 
-		if key == 27 { // Exit on ESC
-			fmt.Println("ESC pressed. Exiting...")
+		if key == 'a' && x > 0 {
+			x--
+		} else if key == 'd' && x < 6 {
+			x++
+		} else if key == 'w' && y > 0 {
+			y--
+		} else if key == 's' && y < 6 {
+			y++
+		} else if key == 27 || key == 'q' { // Exit on ESC or Q
+			fmt.Println("Exiting...")
 			os.Exit(0)
 		}
 	}
