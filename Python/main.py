@@ -5,12 +5,18 @@ import threading
 import time
 import select
 
+import models.snake
+import ui.cli
+
 paused = threading.Event()
 paused.clear()
 running = True
 
+game = models.snake.SnakeGame()
+
 def key_listener():
     global running
+    global game
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     try:
@@ -25,19 +31,28 @@ def key_listener():
                     else:
                         print("[Paused]")
                         paused.set()
-                elif ch == '\x1b':
+                elif ch == '\x1b' or ch == 'q':
                     running = False
+                elif ch == 'w':
+                    game.change_dir(-1, 0)
+                elif ch == 's':
+                    game.change_dir(1, 0)
+                elif ch == 'd':
+                    game.change_dir(0, 1)
+                elif ch == 'a':
+                    game.change_dir(0, -1)
+
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
 def main():
     global running
-    i = 0
+    global game
     while running:
         if not paused.is_set():
-            print(i)
-            i += 1
-        time.sleep(0.5)
+            ui.cli.draw(game)
+            game.update()
+        time.sleep(0.2)
 
 if __name__ == "__main__":
     listener_thread = threading.Thread(target=key_listener, daemon=True)
