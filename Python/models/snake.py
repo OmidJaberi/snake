@@ -8,6 +8,7 @@ class SnakeGame:
 
     def reset(self):
         self.__dir = (0, 1)
+        self.__prev_dir = self.__dir
         self.__snake = [(int(self.__width / 2), int(self.__height / 2))]
         self.__mouse = (int(self.__width / 2), int(self.__height / 2) + 1)
 
@@ -28,6 +29,7 @@ class SnakeGame:
             self.__mouse = (randint(0, self.__width - 1), randint(0, self.__height - 1))
 
     def change_dir(self, x, y):
+        if self.__prev_dir == (-x, -y): return
         self.__dir = (x, y)
 
     def update(self):
@@ -41,4 +43,5 @@ class SnakeGame:
             self.spawn()
         else:
             self.__snake.pop(0)
+        self.__prev_dir = self.__dir
         return not new_head in self.__snake[:-1]
