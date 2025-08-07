@@ -24,7 +24,9 @@ def main():
         if ui.is_paused():
             continue
         ui.draw(game)
-        game.update()
+        if not game.update():
+            ui.stop()
+            print("Game over!")
         time.sleep(0.2)
 
 if __name__ == "__main__":
