@@ -4,9 +4,12 @@ class SnakeGame:
     def __init__(self, width = 16, height = 16):
         self.__width = width
         self.__height = height
+        self.reset()
+
+    def reset(self):
         self.__dir = (0, 1)
-        self.__snake = [(int(width / 2), int(height / 2))]
-        self.__mouse = (int(width / 2), int(height / 2) + 1)
+        self.__snake = [(int(self.__width / 2), int(self.__height / 2))]
+        self.__mouse = (int(self.__width / 2), int(self.__height / 2) + 1)
 
     def get_width(self):
         return self.__width
@@ -38,3 +41,4 @@ class SnakeGame:
             self.spawn()
         else:
             self.__snake.pop(0)
+        return not new_head in self.__snake[:-1]
