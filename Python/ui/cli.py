@@ -1,3 +1,4 @@
+import os
 import sys
 import tty
 import termios
@@ -28,25 +29,16 @@ class Cli:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
     def draw(self, game):
-        print("\033[2J\033[H", end='')
-        print("╔", end="")
-        for i in range(2 * game.get_width()):
-            print("═", end = "")
-        print("╗")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("╔" + "═" * (2 * game.get_width()) + "╗")
         for i in range(game.get_height()):
-            print("║", end = "")
-            for j in range(game.get_width()):
-                if game.on_snake(i, j):
-                    print('o', end = ' ')
-                elif game.on_mouse(i, j):
-                    print('#', end = ' ')
-                else:
-                    print(' ', end = ' ')
-            print("║")
-        print("╚", end="")
-        for i in range(2 * game.get_width()):
-            print("═", end = "")
-        print("╝")
+            row = "".join(
+                ('o ' if game.on_snake(i, j) else
+                 '# ' if game.on_mouse(i, j) else '  ')
+                for j in range(game.get_width())
+            )
+            print(f"║{row}║")
+        print("╚" + "═" * (2 * game.get_width()) + "╝")
 
     def is_running(self):
         return self.__running.is_set()
