@@ -30,6 +30,10 @@ class Cli:
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
+    def show_message(self, message):
+        if message:
+            print(f"\n{message}")
+
     def draw(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         print(f"Score: {self.__game.get_score()}")
@@ -58,5 +62,4 @@ class Cli:
                 self.__game.reset()
             self.__paused.clear()
         else:
-            print("[Paused]")
             self.__paused.set()
