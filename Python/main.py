@@ -9,7 +9,7 @@ def key_press_handler(ch):
     if ch == '\x1b' or ch == 'q':
         ui.stop()
     elif ch == ' ':
-        ui.toggel_pause()
+        ui.toggle_pause()
     elif ch == 'w':
         game.change_dir(-1, 0)
     elif ch == 's':
