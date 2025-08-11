@@ -6,11 +6,13 @@ import select
 import threading
 
 class Cli:
-    def __init__(self):
+    def __init__(self, game):
         self.__paused = threading.Event()
-        self.__paused.clear()
+        self.__paused.set()
         self.__running = threading.Event()
         self.__running.set()
+        self.__game = game
+        self.draw()
 
     def set_key_listener(self, handler):
         listener_thread = threading.Thread(target=self.key_listener, args=(handler, ), daemon=True)
@@ -28,17 +30,17 @@ class Cli:
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
-    def draw(self, game):
+    def draw(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print("╔" + "═" * (2 * game.get_width()) + "╗")
-        for i in range(game.get_height()):
+        print("╔" + "═" * (2 * self.__game.get_width()) + "╗")
+        for i in range(self.__game.get_height()):
             row = "".join(
-                ('o ' if game.on_snake(i, j) else
-                 '# ' if game.on_mouse(i, j) else '  ')
-                for j in range(game.get_width())
+                ('o ' if self.__game.on_snake(i, j) else
+                 '# ' if self.__game.on_mouse(i, j) else '  ')
+                for j in range(self.__game.get_width())
             )
             print(f"║{row}║")
-        print("╚" + "═" * (2 * game.get_width()) + "╝")
+        print("╚" + "═" * (2 * self.__game.get_width()) + "╝")
 
     def is_running(self):
         return self.__running.is_set()
@@ -51,6 +53,8 @@ class Cli:
 
     def toggle_pause(self):
         if self.__paused.is_set():
+            if not self.__game.is_running():
+                self.__game.reset()
             self.__paused.clear()
         else:
             print("[Paused]")

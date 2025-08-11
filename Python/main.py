@@ -3,7 +3,7 @@ import models.snake
 import ui.cli
 
 game = models.snake.SnakeGame()
-ui = ui.cli.Cli()
+ui = ui.cli.Cli(game)
 
 def key_press_handler(ch):
     if ch == '\x1b' or ch == 'q':
@@ -23,9 +23,9 @@ def main():
     while ui.is_running():
         if ui.is_paused():
             continue
-        ui.draw(game)
+        ui.draw()
         if not game.update():
-            ui.stop()
+            ui.toggle_pause()
             print("Game over!")
         time.sleep(0.2)
 
