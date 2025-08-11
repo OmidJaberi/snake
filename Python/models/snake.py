@@ -8,14 +8,18 @@ class SnakeGame:
 
     def reset(self):
         self.__prev_dir = self.__dir = (0, 1)
-        self.__snake = [(int(self.__width / 2), int(self.__height / 2))]
-        self.__mouse = (int(self.__width / 2) + self.__dir[0], int(self.__height / 2) + self.__dir[1])
+        x, y = int(self.__width / 2), int(self.__height / 2)
+        self.__snake = [(x, y), (x, y)]
+        self.spawn()
 
     def get_width(self):
         return self.__width
 
     def get_height(self):
         return self.__height
+
+    def get_score(self):
+        return 50 * (len(self.__snake) - 2)
 
     def on_snake(self, x, y):
         return (x, y) in self.__snake
@@ -27,11 +31,10 @@ class SnakeGame:
         self.__mouse = choice([(x, y) for x in range(self.__width) for y in range(self.__height) if not self.on_snake(x, y)])
 
     def change_dir(self, x, y):
-        if self.__prev_dir == (-x, -y): return
-        self.__dir = (x, y)
+        self.__dir = self.__dir if self.__prev_dir == (-x, -y) else (x, y)
 
     def is_running(self):
-        return self.__snake[-1] not in self.__snake[:-1]
+        return len(self.__snake) <= 2 or self.__snake[-1] not in self.__snake[:-1]
 
     def update(self):
         if not self.is_running(): return False

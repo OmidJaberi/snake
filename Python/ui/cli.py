@@ -32,6 +32,7 @@ class Cli:
 
     def draw(self):
         os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"Score: {self.__game.get_score()}")
         print("╔" + "═" * (2 * self.__game.get_width()) + "╗")
         for i in range(self.__game.get_height()):
             row = "".join(
