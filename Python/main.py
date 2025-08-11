@@ -30,7 +30,7 @@ def main():
         if not game.update():
             ui.toggle_pause()
             ui.show_message("Game over! Press SPACE to play again.")
-        time.sleep(0.2)
+        time.sleep(0.15)
 
 if __name__ == "__main__":
     ui.set_key_listener(key_press_handler)

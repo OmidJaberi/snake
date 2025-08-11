@@ -1,14 +1,14 @@
 from random import choice
 
 class SnakeGame:
-    def __init__(self, width = 16, height = 16):
+    def __init__(self, width = 15, height = 10):
         self.__width = width
         self.__height = height
         self.reset()
 
     def reset(self):
         self.__prev_dir = self.__dir = (0, 1)
-        x, y = int(self.__width / 2), int(self.__height / 2)
+        x, y = int(self.__height / 2), int(self.__width / 2)
         self.__snake = [(x, y), (x, y)]
         self.spawn()
 
@@ -28,7 +28,7 @@ class SnakeGame:
         return x == self.__mouse[0] and y == self.__mouse[1]
 
     def spawn(self):
-        self.__mouse = choice([(x, y) for x in range(self.__width) for y in range(self.__height) if not self.on_snake(x, y)])
+        self.__mouse = choice([(x, y) for x in range(self.__height) for y in range(self.__width) if not self.on_snake(x, y)])
 
     def change_dir(self, x, y):
         self.__dir = self.__dir if self.__prev_dir == (-x, -y) else (x, y)
@@ -40,7 +40,7 @@ class SnakeGame:
         if not self.is_running(): return False
         x, y = self.__snake[-1]
         dx, dy = self.__dir
-        new_head = ((x + dx) % self.__width, (y + dy) % self.__height)
+        new_head = ((x + dx) % self.__height, (y + dy) % self.__width)
         self.__snake.append(new_head)
         if new_head == self.__mouse:
             self.spawn()
