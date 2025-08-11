@@ -12,13 +12,13 @@ def key_press_handler(ch):
         ui.toggle_pause()
         if ui.is_paused():
             ui.show_message("The game is paused. Press SPACE to continue.")
-    elif ch == 'w':
+    elif ch in ('w', '\x1b[A', '\x1bOA'):
         game.change_dir(-1, 0)
-    elif ch == 's':
+    elif ch in ('s', '\x1b[B', '\x1bOB'):
         game.change_dir(1, 0)
-    elif ch == 'd':
+    elif ch in ('d', '\x1b[C', '\x1bOC'):
         game.change_dir(0, 1)
-    elif ch == 'a':
+    elif ch in ('a', '\x1b[D', '\x1bOD'):
         game.change_dir(0, -1)
 
 def main():

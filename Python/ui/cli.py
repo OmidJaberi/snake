@@ -4,6 +4,7 @@ import tty
 import termios
 import select
 import threading
+import time
 
 class Cli:
     snake = "🔵"
@@ -27,9 +28,20 @@ class Cli:
         try:
             tty.setcbreak(fd)
             while True:
-                if select.select([sys.stdin], [], [], 0.1)[0]:
-                    ch = sys.stdin.read(1)
-                    handler(ch)
+                r, _, _ = select.select([fd], [], [], 0.1)
+                if not r:
+                    continue
+                b = os.read(fd, 1)
+                if not b:
+                    continue
+                if b == b'\x1b':
+                    time.sleep(0.02)
+                    extra = b''
+                    while select.select([fd], [], [], 0)[0]:
+                        extra += os.read(fd, 32)
+                    b = b + extra
+                ch = b.decode('utf-8', errors='ignore')
+                handler(ch)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
