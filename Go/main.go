@@ -6,9 +6,6 @@ import (
 	"time"
 )
 
-var x int = 3
-var y int = 3
-
 func keyPressHandler(key byte) {
 	if key == 'a' && x > 0 {
 		x--
@@ -37,17 +34,7 @@ func main() {
 
 	// Main thread
 	for {
-		fmt.Print("\033[H\033[2J") // Clear Screen
-		for i := 0; i < 7; i++ {
-			for j := 0; j < 7; j++ {
-				if i == y && j == x {
-					fmt.Print("o ")
-				} else {
-					fmt.Print(". ")
-				}
-			}
-			fmt.Println()
-		}
+		draw()
 		time.Sleep(200 * time.Millisecond)
 	}
 }
