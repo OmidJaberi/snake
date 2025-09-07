@@ -9,16 +9,31 @@ import (
 var x int = 3
 var y int = 3
 
+func keyPressHandler(key byte) {
+	if key == 'a' && x > 0 {
+		x--
+	} else if key == 'd' && x < 6 {
+		x++
+	} else if key == 'w' && y > 0 {
+		y--
+	} else if key == 's' && y < 6 {
+		y++
+	} else if key == 27 || key == 'q' { // Exit on ESC or Q
+		fmt.Println("Exiting...")
+		os.Exit(0)
+	}
+}
+
 func main() {
-	// Save current settings
+	// Set Terminal settings
 	oldState, err := makeRaw(int(os.Stdin.Fd()))
 	if err != nil {
 		panic(err)
 	}
 	defer restore(int(os.Stdin.Fd()), oldState)
 
-	// Start a goroutine for keypresses
-	go listenForKeyPress()
+	// Goroutine for keypress
+	go listenForKeyPress(keyPressHandler)
 
 	// Main thread
 	for {

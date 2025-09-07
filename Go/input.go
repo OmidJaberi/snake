@@ -1,33 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"syscall"
 	"unsafe"
 )
 
-func listenForKeyPress() {
+func listenForKeyPress(handler func(byte)) {
 	buf := make([]byte, 1)
-
 	for {
 		os.Stdin.Read(buf)
-		key := buf[0]
-
-		//fmt.Printf("Key pressed: %v ('%c')\n", key, key)
-
-		if key == 'a' && x > 0 {
-			x--
-		} else if key == 'd' && x < 6 {
-			x++
-		} else if key == 'w' && y > 0 {
-			y--
-		} else if key == 's' && y < 6 {
-			y++
-		} else if key == 27 || key == 'q' { // Exit on ESC or Q
-			fmt.Println("Exiting...")
-			os.Exit(0)
-		}
+		handler(buf[0])
 	}
 }
 
@@ -56,11 +39,7 @@ func makeRaw(fd int) (*syscall.Termios, error) {
 	return &oldState, nil
 }
 
-func restore(fd int, state *syscall.Termios) error {
-	_, _, errno := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(fd),
+func restore(fd int, state *syscall.Termios) {
+	syscall.Syscall6(syscall.SYS_IOCTL, uintptr(fd),
 		uintptr(syscall.TIOCSETA), uintptr(unsafe.Pointer(state)), 0, 0, 0)
-	if errno != 0 {
-		return errno
-	}
-	return nil
 }
