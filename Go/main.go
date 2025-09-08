@@ -37,9 +37,13 @@ func main() {
 
 	go listenForKeyPress(keyPressHandler)
 	for {
-		if game.update() == GameOver {
+		switch game.update() {
+		case GameOver:
 			fmt.Println("Game over!!!")
-			break
+			os.Exit(0)	
+		case Win:
+			fmt.Println("You won!!!")
+			os.Exit(0)	
 		}
 		draw(game)
 		time.Sleep(Delay * time.Millisecond)

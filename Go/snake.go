@@ -9,6 +9,7 @@ type GameResult int
 const (
 	Running GameResult = iota
 	GameOver
+	Win
 )
 
 type Game struct {
@@ -41,7 +42,7 @@ func (g *Game) changeDir(x, y int) {
 	}
 }
 
-func (g *Game) spawn() {
+func (g *Game) spawn() bool {
 	emptyCells := make([][2]int, 0, g.width * g.height)
 	for i := 0; i < g.width; i++ {
 		for j := 0; j < g.height; j++ {
@@ -52,9 +53,10 @@ func (g *Game) spawn() {
 	}
 	if len(emptyCells) == 0 {
 		g.food = [2]int{g.width + 1, g.height + 1}
-		return
+		return false
 	}
 	g.food = emptyCells[int(rand.Intn(len(emptyCells)))]
+	return true
 }
 
 func (g *Game) update() GameResult {
@@ -64,7 +66,9 @@ func (g *Game) update() GameResult {
 		(g.snake[len(g.snake) - 1][1] + g.dir[1] + g.height) % g.height,
 	}
 	if g.onFood(newHead[0], newHead[1]) {
-		g.spawn()
+		if !g.spawn() {
+			return Win
+		}
 	} else {
 		g.snake = g.snake[1:]
 	}
