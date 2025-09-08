@@ -49,16 +49,16 @@ func (g *Game) update() {
 		(g.snake[len(g.snake) - 1][0] + g.dir[0] + g.width) % g.width,
 		(g.snake[len(g.snake) - 1][1] + g.dir[1] + g.height) % g.height,
 	}
-	if g.onSnake(new_head[0], new_head[1]) {
-		fmt.Println("Game over!!!")
-		os.Exit(0)
-	}
-	g.snake = append(g.snake, new_head)
 	if g.onFood(new_head[0], new_head[1]) {
 		g.spawn()
 	} else {
 		g.snake = g.snake[1:]
 	}
+	if g.onSnake(new_head[0], new_head[1]) {
+		fmt.Println("Game over!!!")
+		os.Exit(0)
+	}
+	g.snake = append(g.snake, new_head)
 }
 
 func (g *Game) onSnake(x, y int) bool {
