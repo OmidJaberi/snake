@@ -38,9 +38,19 @@ func (g *Game) changeDir(x, y int) {
 }
 
 func (g *Game) spawn() {
-	x := rand.Intn(g.width)
-	y := rand.Intn(g.height)
-	g.food = [2]int{x, y}
+	emptyCells := make([][2]int, 0, g.width * g.height)
+	for i := 0; i < g.width; i++ {
+		for j := 0; j < g.height; j++ {
+			if !g.onSnake(i, j) && !g.onFood(i, j) {
+				emptyCells = append(emptyCells, [2]int{i, j})
+			}
+		}
+	}
+	if len(emptyCells) == 0 {
+		g.food = [2]int{g.width + 1, g.height + 1}
+		return
+	}
+	g.food = emptyCells[int(rand.Intn(len(emptyCells)))]
 }
 
 func (g *Game) update() {
@@ -69,7 +79,6 @@ func (g *Game) onSnake(x, y int) bool {
 	}
 	return false
 }
-
 
 func (g *Game) onFood(x, y int) bool {
 	return (x == g.food[0] && y == g.food[1])
