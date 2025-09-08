@@ -11,6 +11,7 @@ type Game struct {
 	snake	[][2]int
 	food	[2]int
 	dir		[2]int
+	p_dir	[2]int
 	width	int
 	height	int
 	running	bool
@@ -24,15 +25,15 @@ func newGame(w, h int) *Game {
 }
 
 func (g *Game) init() {
-	fmt.Println("Inited")
 	g.snake = [][2]int{{g.width / 2, g.height / 2}}
-	g.dir = [2]int{0, 1}
-	g.spawn()
+	g.food = [2]int{g.width / 2 + 1, g.height / 2}
+	g.dir = [2]int{1, 0}
+	g.p_dir = g.dir
 }
 
 func (g *Game) changeDir(x, y int) {
 	if !(x + g.dir[0] == 0 && y + g.dir[1] == 0) {
-		g.dir = [2]int{x, y}
+		g.p_dir = [2]int{x, y}
 	}
 }
 
@@ -43,6 +44,7 @@ func (g *Game) spawn() {
 }
 
 func (g *Game) update() {
+	g.dir = g.p_dir
 	new_head := [2]int{
 		(g.snake[len(g.snake) - 1][0] + g.dir[0] + g.width) % g.width,
 		(g.snake[len(g.snake) - 1][1] + g.dir[1] + g.height) % g.height,
