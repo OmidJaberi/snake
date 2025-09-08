@@ -1,16 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"math/rand"
 	"time"
+)
+
+type GameResult int
+const (
+	Running GameResult = iota
+	GameOver
+	Win
 )
 
 type Game struct {
 	snake	[][2]int
 	food	[2]int
 	dir		[2]int
+	pDir	[2]int
 	width	int
 	height	int
 	running	bool
@@ -24,39 +30,53 @@ func newGame(w, h int) *Game {
 }
 
 func (g *Game) init() {
-	fmt.Println("Inited")
 	g.snake = [][2]int{{g.width / 2, g.height / 2}}
-	g.dir = [2]int{0, 1}
-	g.spawn()
+	g.food = [2]int{g.width / 2 + 1, g.height / 2}
+	g.dir = [2]int{1, 0}
+	g.pDir = g.dir
 }
 
 func (g *Game) changeDir(x, y int) {
 	if !(x + g.dir[0] == 0 && y + g.dir[1] == 0) {
-		g.dir = [2]int{x, y}
+		g.pDir = [2]int{x, y}
 	}
 }
 
-func (g *Game) spawn() {
-	x := rand.Intn(g.width)
-	y := rand.Intn(g.height)
-	g.food = [2]int{x, y}
+func (g *Game) spawn() bool {
+	emptyCells := make([][2]int, 0, g.width * g.height)
+	for i := 0; i < g.width; i++ {
+		for j := 0; j < g.height; j++ {
+			if !g.onSnake(i, j) && !g.onFood(i, j) {
+				emptyCells = append(emptyCells, [2]int{i, j})
+			}
+		}
+	}
+	if len(emptyCells) == 0 {
+		g.food = [2]int{g.width + 1, g.height + 1}
+		return false
+	}
+	g.food = emptyCells[int(rand.Intn(len(emptyCells)))]
+	return true
 }
 
-func (g *Game) update() {
-	new_head := [2]int{
+func (g *Game) update() GameResult {
+	g.dir = g.pDir
+	newHead := [2]int{
 		(g.snake[len(g.snake) - 1][0] + g.dir[0] + g.width) % g.width,
 		(g.snake[len(g.snake) - 1][1] + g.dir[1] + g.height) % g.height,
 	}
-	if g.onSnake(new_head[0], new_head[1]) {
-		fmt.Println("Game over!!!")
-		os.Exit(0)
-	}
-	g.snake = append(g.snake, new_head)
-	if g.onFood(new_head[0], new_head[1]) {
-		g.spawn()
+	if g.onFood(newHead[0], newHead[1]) {
+		if !g.spawn() {
+			return Win
+		}
 	} else {
 		g.snake = g.snake[1:]
 	}
+	if g.onSnake(newHead[0], newHead[1]) {
+		return GameOver
+	}
+	g.snake = append(g.snake, newHead)
+	return Running
 }
 
 func (g *Game) onSnake(x, y int) bool {
@@ -68,7 +88,10 @@ func (g *Game) onSnake(x, y int) bool {
 	return false
 }
 
-
 func (g *Game) onFood(x, y int) bool {
 	return (x == g.food[0] && y == g.food[1])
+}
+
+func (g *Game) getScore() int {
+	return (len(g.snake) - 2) * 50
 }
