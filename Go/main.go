@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	Delay = 200
-	Width = 12
-	Height = 8
+	Delay = 150
+	Width = 15
+	Height = 10
 )
 
 var game *Game = newGame(Width, Height)
