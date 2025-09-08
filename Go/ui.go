@@ -12,6 +12,7 @@ const (
 
 func draw(game *Game) {
 	fmt.Print("\033[H\033[2J") // Clear Screen
+	fmt.Printf("Score: %d\n", game.getScore())
 	setGrass()
     fmt.Print("╔")
 	for i := 0; i < 2 * game.width; i++ {

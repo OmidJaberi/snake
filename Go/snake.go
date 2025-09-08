@@ -91,3 +91,7 @@ func (g *Game) onSnake(x, y int) bool {
 func (g *Game) onFood(x, y int) bool {
 	return (x == g.food[0] && y == g.food[1])
 }
+
+func (g *Game) getScore() int {
+	return (len(g.snake) - 2) * 50
+}
