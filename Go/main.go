@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"time"
 )
@@ -25,13 +24,14 @@ func keyPressHandler(key byte) {
 	case 's':
 		game.changeDir(0, 1)
 	case ' ':
-		if game.togglePause() {
+		setMessage("")
+		switch game.togglePause() {
+		case Paused:
 			setMessage("The game is paused. Press SPACE to continue.")
-		} else {
-			setMessage("")
+		case GameOver, Win:
+			game.init()
 		}
 	case 'q', 27:
-		fmt.Println("Exiting...")
 		os.Exit(0)
 	}
 }
@@ -45,11 +45,9 @@ func main() {
 	for {
 		switch game.update() {
 		case GameOver:
-			fmt.Println("Game over!!!")
-			os.Exit(0)	
+			setMessage("Game over! Press SPACE to play again.")
 		case Win:
-			fmt.Println("You won!!!")
-			os.Exit(0)	
+			setMessage("You won! Press SPACE to play again.")
 		}
 		draw(game)
 		time.Sleep(Delay * time.Millisecond)
