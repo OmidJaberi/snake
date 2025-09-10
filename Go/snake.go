@@ -20,7 +20,7 @@ type Game struct {
 	pDir	[2]int
 	width	int
 	height	int
-	state GameState
+	state	GameState
 }
 
 func newGame(w, h int) *Game {
