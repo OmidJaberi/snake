@@ -24,6 +24,12 @@ func keyPressHandler(key byte) {
 		game.changeDir(0, -1)
 	case 's':
 		game.changeDir(0, 1)
+	case ' ':
+		if game.togglePause() {
+			setMessage("The game is paused. Press SPACE to continue.")
+		} else {
+			setMessage("")
+		}
 	case 'q', 27:
 		fmt.Println("Exiting...")
 		os.Exit(0)
