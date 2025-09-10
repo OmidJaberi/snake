@@ -10,6 +10,8 @@ const (
 	Grass = "  "
 )
 
+var message string
+
 func draw(game *Game) {
 	fmt.Print("\033[H\033[2J") // Clear Screen
 	fmt.Printf("Score: %d\n", game.getScore())
@@ -38,6 +40,13 @@ func draw(game *Game) {
 	}
     fmt.Println("╝")
 	setDefault()
+	if len(message) > 0 {
+		fmt.Println(message)
+	}
+}
+
+func setMessage(m string) {
+	message = "\n" + m
 }
 
 func setGrass() {

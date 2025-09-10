@@ -5,9 +5,10 @@ import (
 	"time"
 )
 
-type GameResult int
+type GameState int
 const (
-	Running GameResult = iota
+	Running GameState = iota
+	Paused
 	GameOver
 	Win
 )
@@ -19,7 +20,7 @@ type Game struct {
 	pDir	[2]int
 	width	int
 	height	int
-	running	bool
+	state GameState
 }
 
 func newGame(w, h int) *Game {
@@ -34,9 +35,11 @@ func (g *Game) init() {
 	g.food = [2]int{g.width / 2 + 1, g.height / 2}
 	g.dir = [2]int{1, 0}
 	g.pDir = g.dir
+	g.state = Running
 }
 
 func (g *Game) changeDir(x, y int) {
+	if g.state != Running { return }
 	if !(x + g.dir[0] == 0 && y + g.dir[1] == 0) {
 		g.pDir = [2]int{x, y}
 	}
@@ -59,7 +62,8 @@ func (g *Game) spawn() bool {
 	return true
 }
 
-func (g *Game) update() GameResult {
+func (g *Game) update() GameState {
+	if g.state != Running { return g.state }
 	g.dir = g.pDir
 	newHead := [2]int{
 		(g.snake[len(g.snake) - 1][0] + g.dir[0] + g.width) % g.width,
@@ -67,16 +71,16 @@ func (g *Game) update() GameResult {
 	}
 	if g.onFood(newHead[0], newHead[1]) {
 		if !g.spawn() {
-			return Win
+			g.state = Win
 		}
 	} else {
 		g.snake = g.snake[1:]
 	}
 	if g.onSnake(newHead[0], newHead[1]) {
-		return GameOver
+		g.state = GameOver
 	}
 	g.snake = append(g.snake, newHead)
-	return Running
+	return g.state
 }
 
 func (g *Game) onSnake(x, y int) bool {
@@ -94,4 +98,13 @@ func (g *Game) onFood(x, y int) bool {
 
 func (g *Game) getScore() int {
 	return (len(g.snake) - 2) * 50
+}
+
+func (g *Game) togglePause() GameState {
+	if g.state == Running {
+		g.state = Paused
+	} else if g.state == Paused {
+		g.state = Running
+	}
+	return g.state
 }
